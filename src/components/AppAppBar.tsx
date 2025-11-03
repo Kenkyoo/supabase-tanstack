@@ -14,6 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ColorModeIconDropdown from "./ColorModeIconDropdown";
 import Sitemark from "./SitemarkIcon";
 import { Route } from "../routes/__root";
+import Typography from '@mui/material/Typography';
 
 import { HeadContent, Link } from "@tanstack/react-router";
 
@@ -91,13 +92,14 @@ export default function AppAppBar() {
           >
             <div>
               {user ? (
-                <>
-                  <span className="mr-2">{user.email}</span>
+                <div className="flex items-center gap-4">
+                      <Typography variant="h6" color="white" gutterBottom>
+       {user.email}
+      </Typography>
                   <Button color="primary" variant="contained" size="small">
                     <Link to="/logout">Logout</Link>
                   </Button>
-                  <Link to="/logout">Logout</Link>
-                </>
+                </div>
               ) : (
                 <Button color="primary" variant="text" size="small">
                   <Link to="/login">Login</Link>

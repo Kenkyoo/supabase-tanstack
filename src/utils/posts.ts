@@ -1,37 +1,46 @@
-import { notFound } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import axios from 'redaxios'
+import { notFound } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import axios from "redaxios";
 
 export type PostType = {
-  id: string
-  title: string
-  body: string
-}
+  id: number;
+  name: string;
+  image: string;
+  species: string;
+  status: string;
+};
 
-export const fetchPost = createServerFn({ method: 'GET' })
+// Personaje individual - NO tiene .results, devuelve el objeto directo
+export const fetchPost = createServerFn({ method: "GET" })
   .inputValidator((d: string) => d)
   .handler(async ({ data: postId }) => {
-    console.info(`Fetching post with id ${postId}...`)
+    console.info(`Fetching post with id ${postId}...`);
     const post = await axios
-      .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-      .then((r) => r.data)
+      .get<PostType>(`https://rickandmortyapi.com/api/character/${postId}`)
+      .then((r) => r.data) // ← Quita .results aquí
       .catch((err) => {
-        console.error(err)
+        console.error(err);
         if (err.status === 404) {
-          throw notFound()
+          throw notFound();
         }
-        throw err
-      })
+        throw err;
+      });
+    return post;
+  });
 
-    return post
-  })
-
-export const fetchPosts = createServerFn({ method: 'GET' }).handler(
+// Lista de personajes - SÍ tiene .results
+export const fetchPosts = createServerFn({ method: "GET" }).handler(
   async () => {
-    console.info('Fetching posts...')
-    await new Promise((r) => setTimeout(r, 1000))
+    console.info("Fetching posts...");
+    await new Promise((r) => setTimeout(r, 1000));
+    
+    // Define el tipo correcto de la respuesta
+    type RickMortyResponse = {
+      results: Array<PostType>;
+    };
+    
     return axios
-      .get<Array<PostType>>('https://jsonplaceholder.typicode.com/posts')
-      .then((r) => r.data.slice(0, 10))
+      .get<RickMortyResponse>("https://rickandmortyapi.com/api/character")
+      .then((r) => r.data.results.slice(0, 19)); // ← Aquí sí usa .results
   },
-)
+);
