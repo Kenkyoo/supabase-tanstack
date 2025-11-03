@@ -1,57 +1,98 @@
+import { styled } from "@mui/material/styles";
+import MuiCard from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
+import SitemarkIcon from "./SitemarkIcon";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+
+const Card = styled(MuiCard)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignSelf: "center",
+  width: "100%",
+  padding: theme.spacing(4),
+  gap: theme.spacing(2),
+  margin: "auto",
+  [theme.breakpoints.up("sm")]: {
+    maxWidth: "450px",
+  },
+  boxShadow:
+    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
+  ...theme.applyStyles("dark", {
+    boxShadow:
+      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
+  }),
+}));
+
 export function Auth({
   actionText,
   onSubmit,
   status,
   afterSubmit,
 }: {
-  actionText: string
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  status: 'pending' | 'idle' | 'success' | 'error'
-  afterSubmit?: React.ReactNode
+  actionText: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  status: "pending" | "idle" | "success" | "error";
+  afterSubmit?: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 bg-white dark:bg-black flex items-start justify-center p-8">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">{actionText}</h1>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit(e)
+    <Card variant="outlined">
+      <SitemarkIcon />
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        {actionText}
+      </Typography>
+      <Box
+        component="form"
+        noValidate
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 5,
+        }}
+                  onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(e);
           }}
-          className="space-y-4"
-        >
-          <div>
-            <label htmlFor="email" className="block text-xs">
-              Username
-            </label>
-            <input
+      >
+          <FormControl>
+            <FormLabel htmlFor="email">Username</FormLabel>
+            <TextField
+              required
               type="email"
               name="email"
               id="email"
-              className="px-2 py-1 w-full rounded-sm border border-gray-500/20 bg-white dark:bg-gray-800"
+              fullWidth
             />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-xs">
-              Password
-            </label>
-            <input
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <TextField
+              required
+              fullWidth
               type="password"
               name="password"
               id="password"
-              className="px-2 py-1 w-full rounded-sm border border-gray-500/20 bg-white dark:bg-gray-800"
             />
-          </div>
-          <button
+          </FormControl>
+          <Button
             type="submit"
-            className="w-full bg-cyan-600 text-white rounded-sm py-2 font-black uppercase"
-            disabled={status === 'pending'}
+            fullWidth
+            variant="contained"
+            disabled={status === "pending"}
           >
-            {status === 'pending' ? '...' : actionText}
-          </button>
+            {status === "pending" ? "..." : actionText}
+          </Button>
           {afterSubmit ? afterSubmit : null}
-        </form>
-      </div>
-    </div>
-  )
+      </Box>
+    </Card>
+  );
 }
