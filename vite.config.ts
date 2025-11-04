@@ -1,10 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { defineConfig } from "vite";
+import tsConfigPaths from "vite-tsconfig-paths";
+import viteReact from "@vitejs/plugin-react";
+import netlify from "@netlify/vite-plugin-tanstack-start";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
-  build: {
-    outDir: 'dist',
-  },
-})
+  server: { port: 3000 },
+  plugins: [
+    tsConfigPaths({ projects: ["./tsconfig.json"] }),
+    tanstackStart(),
+    netlify(),
+    viteReact(),
+  ],
+});
