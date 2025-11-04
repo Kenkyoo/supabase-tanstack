@@ -20,9 +20,9 @@ import Divider from "@mui/material/Divider";
 import AppAppBar from "../components/AppAppBar";
 import Container from "@mui/material/Container";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
+const theme = createTheme({
+  colorSchemes: {
+    dark: true,
   },
 });
 
@@ -111,7 +111,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <AppAppBar />
           <Divider />

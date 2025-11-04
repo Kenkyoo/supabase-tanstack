@@ -8,6 +8,10 @@ export type PostType = {
   image: string;
   species: string;
   status: string;
+  location: {
+    name: string;
+  };
+  episode: string[];
 };
 
 // Personaje individual - NO tiene .results, devuelve el objeto directo
@@ -33,12 +37,12 @@ export const fetchPosts = createServerFn({ method: "GET" }).handler(
   async () => {
     console.info("Fetching posts...");
     await new Promise((r) => setTimeout(r, 1000));
-    
+
     // Define el tipo correcto de la respuesta
     type RickMortyResponse = {
       results: Array<PostType>;
     };
-    
+
     return axios
       .get<RickMortyResponse>("https://rickandmortyapi.com/api/character")
       .then((r) => r.data.results.slice(0, 19)); // ← Aquí sí usa .results
