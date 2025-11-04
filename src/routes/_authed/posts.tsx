@@ -9,9 +9,13 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Badge from "@mui/material/Badge";
+import { PostType } from "../../utils/posts";
 
 export const Route = createFileRoute("/_authed/posts")({
-  loader: () => fetchPosts(),
+  loader: async (): Promise<PostType[]> => {
+    // ← Especifica el tipo de retorno
+    return fetchPosts();
+  },
   component: PostsComponent,
 });
 
@@ -53,7 +57,9 @@ const StyledTypography = styled(Typography)({
 
 function PostsComponent() {
   const results = Route.useLoaderData();
-  const [focusedCardIndex, setFocusedCardIndex] = React.useState<number | null>(null);
+  const [focusedCardIndex, setFocusedCardIndex] = React.useState<number | null>(
+    null,
+  );
 
   const handleFocus = (index: number) => {
     setFocusedCardIndex(index);
@@ -73,12 +79,11 @@ function PostsComponent() {
       </div>
       <Outlet />
       <Grid container spacing={2} columns={12}>
-        {[...results, { id: "i-do-not-exist", title: "Non-existent Post" }].map((result, index) => (
+        {results.map((result, index) => (
           <Grid key={result.id} size={{ xs: 12, md: 3 }}>
             <Link
               to="/posts/$postId"
-              params={{ postId: result.id }}
-              className="block py-1 text-blue-800 hover:text-blue-600"
+              params={{ postId: String(result.id) }}
               activeProps={{ className: "text-black font-bold" }}
             >
               <StyledCard
@@ -105,7 +110,11 @@ function PostsComponent() {
                   <Typography gutterBottom variant="h6" component="div">
                     {result.name}
                   </Typography>
-                  <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+                  <StyledTypography
+                    variant="body2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
                     {result.species}
                   </StyledTypography>
                 </StyledCardContent>
