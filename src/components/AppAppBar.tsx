@@ -11,10 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import ColorModeIconDropdown from "./ColorModeIconDropdown";
+import ToggleMode from "./ToggleMode";
 import Sitemark from "./SitemarkIcon";
 import { Route } from "../routes/__root";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 
 import { HeadContent, Link } from "@tanstack/react-router";
 
@@ -93,9 +93,9 @@ export default function AppAppBar() {
             <div>
               {user ? (
                 <div className="flex items-center gap-4">
-                      <Typography variant="h6" color="white" gutterBottom>
-       {user.email}
-      </Typography>
+                  <Typography variant="h6" color="white" gutterBottom>
+                    {user.email}
+                  </Typography>
                   <Button color="primary" variant="contained" size="small">
                     <Link to="/logout">Logout</Link>
                   </Button>
@@ -106,10 +106,10 @@ export default function AppAppBar() {
                 </Button>
               )}
             </div>
-            <ColorModeIconDropdown />
+            <ToggleMode />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
-            <ColorModeIconDropdown size="medium" />
+            <ToggleMode />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
